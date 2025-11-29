@@ -1,4 +1,4 @@
-const Link = require('../models/Link');
+const Link = require('../models/link');
 const { generateCode } = require('../utils/validators');
 
 /**
