@@ -1,61 +1,3 @@
-// "use client";
-
-// import { useState } from "react";
-// import { createLink } from "@/lib/api";
-
-// export default function AddLinkForm() {
-//   const [target, setTarget] = useState("");
-//   const [code, setCode] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [msg, setMsg] = useState("");
-
-//   const submit = async (e) => {
-//     e.preventDefault();
-//     setMsg("");
-//     setLoading(true);
-
-//     const res = await createLink({ target, code });
-//     if (res.error) setMsg(res.error);
-//     else setMsg("Created Successfully!");
-
-//     setLoading(false);
-//   };
-
-//   return (
-//     <form
-//       onSubmit={submit}
-//       className="bg-white shadow rounded p-4 space-y-3"
-//     >
-//       <h2 className="text-lg font-semibold">Create Short Link</h2>
-
-//       <input
-//         type="text"
-//         className="w-full border px-3 py-2 rounded"
-//         placeholder="https://example.com"
-//         value={target}
-//         onChange={(e) => setTarget(e.target.value)}
-//         required
-//       />
-
-//       <input
-//         type="text"
-//         className="w-full border px-3 py-2 rounded"
-//         placeholder="Custom code (optional)"
-//         value={code}
-//         onChange={(e) => setCode(e.target.value)}
-//       />
-
-//       <button
-//         disabled={loading}
-//         className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-//       >
-//         {loading ? "Creating..." : "Create"}
-//       </button>
-
-//       {msg && <p className="text-center text-sm text-red-500">{msg}</p>}
-//     </form>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
@@ -79,7 +21,7 @@ export default function AddLinkForm({ onCreate }) {
       setMsg({ type: "success", text: "Created Successfully!" });
       setTarget("");
       setCode("");
-        if (onCreate) onCreate(res); 
+        if (onCreate) onCreate(res.data); 
          setTimeout(() => setMsg(""), 3000);
     }
 

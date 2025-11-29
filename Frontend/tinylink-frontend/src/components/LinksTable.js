@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { deleteLink } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -16,24 +16,45 @@ import {
 
 export default function LinksTable({ links: initialLinks }) {
     const router = useRouter();
-    const [localLinks, setlocalLinks] = useState(initialLinks); // keep local state
+    const [localLinks, setlocalLinks] = useState(initialLinks || []); // keep local state
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const limit = 6;
 
     // Filter links by search
-    const filteredLinks = useMemo(() => {
-        const s = search.toLowerCase();
-        return localLinks.filter(
-            (row) =>
-                row.code.toLowerCase().includes(s) ||
-                row.target.toLowerCase().includes(s)
-        );
-    }, [search, localLinks]);
+    // const filteredLinks = useMemo(() => {
+    //     const s = search.toLowerCase();
+    //     return localLinks.filter(
+    //         (row) =>
+    //             row.code.toLowerCase().includes(s) ||
+    //             row.target.toLowerCase().includes(s)
+    //     );
+    // }, [search, localLinks]);
+ // SAFE data handling
+const safeLinks = Array.isArray(localLinks)
+  ? localLinks.filter((x) => x && typeof x.code === "string")
+  : [];
+
+// Filtering
+const filteredLinks = useMemo(() => {
+  const s = search.toLowerCase();
+
+  return safeLinks.filter((row) => {
+    const code = row.code.toLowerCase();
+    const target = row.target.toLowerCase();
+    return code.includes(s) || target.includes(s);
+  });
+}, [safeLinks, search]);
+
+// Pagination
+const paginated = filteredLinks.slice((page - 1) * limit, page * limit);
+
+
+
 
     // Pagination
     const totalPages = Math.ceil(filteredLinks.length / limit);
-    const paginated = filteredLinks.slice((page - 1) * limit, page * limit);
+    // const paginated = filteredLinks.slice((page - 1) * limit, page * limit);
 
     const remove = async (code) => {
         const result = await Swal.fire({
@@ -69,6 +90,10 @@ export default function LinksTable({ links: initialLinks }) {
             }
         }
     };
+    useEffect(() => {
+    setlocalLinks(initialLinks);
+}, [initialLinks]);
+
 
     return (
         <div className="bg-white border border-gray-200 shadow-xl rounded-2xl p-6 mt-6 space-y-5">
