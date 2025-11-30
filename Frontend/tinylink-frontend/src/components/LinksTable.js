@@ -22,23 +22,43 @@ export default function LinksTable({  onDelete, reload }) {
   const [page, setPage] = useState(1);
   const limit = 6;
 
-   const loadLinks = async () => {
-    setLoading(true);
+//    const loadLinks = async () => {
+//     setLoading(true);
+//     const data = await getAllLinks();
+//     setLinks(Array.isArray(data) ? data : []);
+//     setLoading(false);
+//   };
+const loadLinks = async () => {
+  try {
     const data = await getAllLinks();
-    setLinks(Array.isArray(data) ? data : []);
+    setLinks(data);  // now safe inside async function
+  } catch (err) {
+    console.error(err);
+  } finally {
     setLoading(false);
+  }
+};
+
+//   useEffect(() => {
+//     loadLinks();
+
+//     // Listen for "links-updated" event from AddLinkForm
+//     window.addEventListener("links-updated", loadLinks);
+
+//     return () => {
+//       window.removeEventListener("links-updated", loadLinks);
+//     };
+//   }, []);
+useEffect(() => {
+  const fetchLinks = async () => {
+    await loadLinks();
   };
+  fetchLinks();
 
-  useEffect(() => {
-    loadLinks();
+  window.addEventListener("links-updated", loadLinks);
+  return () => window.removeEventListener("links-updated", loadLinks);
+}, []);
 
-    // Listen for "links-updated" event from AddLinkForm
-    window.addEventListener("links-updated", loadLinks);
-
-    return () => {
-      window.removeEventListener("links-updated", loadLinks);
-    };
-  }, []);
   // filtering
    
   const safeLinks = Array.isArray(links)
