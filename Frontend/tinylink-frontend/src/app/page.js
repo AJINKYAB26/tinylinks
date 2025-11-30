@@ -9,25 +9,17 @@ export default function DashboardPage() {
   const [links, setLinks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchLinks() {
-      const data = await getAllLinks();
-      setLinks(data);
-      setLoading(false);
-    }
-    fetchLinks();
-  }, []);
-
   const handleCreate = (newLink) => {
     setLinks((prev) => [newLink, ...prev]);
   };
-
-  if (loading) return <p>Loading...</p>;
-
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <AddLinkForm onCreate={handleCreate} />
-      <LinksTable links={links} />
+
+      <div className="mt-10">
+        <LinksTable />
+        {/* <LinksTable links={links} onDelete={handleDelete} reload={loadLinks}  /> */}
+      </div>
     </div>
   );
 }

@@ -32,7 +32,10 @@ async function createLink(req, res, next) {
       if (exists) return res.status(409).json({ error: 'code already exists' });
       const link = new Link({ code: desiredCode, target });
       await link.save();
-      return res.status(201).json(link);
+      // return res.status(201).json(link);
+      const saved = await Link.findById(link._id).lean().exec();
+      return res.status(201).json(saved);
+
     }
 
     // auto-generate a unique code length 6 (try up to some attempts)
@@ -65,7 +68,10 @@ async function createLink(req, res, next) {
 
     const link = new Link({ code: newCode, target });
     await link.save();
-    return res.status(201).json(link);
+    // return res.status(201).json(link);
+    const saved = await Link.findById(link._id).lean().exec();
+    return res.status(201).json(saved);
+
   } catch (err) {
     // Duplicate key -> code collision
     if (err.code === 11000) return res.status(409).json({ error: 'code already exists' });

@@ -111,43 +111,12 @@ export default function StatsPage({ params }) {
             </a>
           </div>
 
-           {/* Short URL */}
-           {/* <div className="bg-gray-50 border rounded-xl p-5 hover:shadow-md transition flex flex-col">
-             <p className="text-sm text-gray-500 flex items-center gap-2">🔗 Short URL</p>
-
-             <div className="flex items-center gap-2 mt-1">
-               <a
-                href={`${process.env.NEXT_PUBLIC_API_BASE}/${link.code}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 text-lg underline break-all font-mono hover:text-blue-800 transition"
-               >
-                 {`${process.env.NEXT_PUBLIC_API_BASE}/${link.code}`}
-               </a> */}
-
-               {/* Copy Icon */}
-             {/* <button
-               onClick={() => {
-                 navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_API_BASE}/${link.code}`);
-                 alert("Copied to clipboard!"); // optional feedback
-               }}
-               className="text-gray-500 hover:text-gray-700 transition p-1 rounded"
-               title="Copy to clipboard"
-             >
-               <FiCopy size={18} />
-             </button>
-           </div>
-         </div>  */}
-
-         {/* Short URL */}
+          {/* Short URL */}
           <div className="bg-gray-50 border rounded-xl p-5 hover:shadow-md transition flex flex-col">
             <p className="text-sm text-gray-500 flex items-center gap-2">🔗 Short URL</p>
             <div className="flex items-center gap-2 mt-1">
               {(() => {
-                const baseUrl =
-                  typeof window !== "undefined"
-                    ? window.location.origin
-                    : process.env.NEXT_PUBLIC_APP_URL;
+                const baseUrl = process.env.NEXT_PUBLIC_API_BASE; // backend URL
                 const shortUrl = `${baseUrl}/${link.code}`;
                 // const [copied, setCopied] = useState(false);
 

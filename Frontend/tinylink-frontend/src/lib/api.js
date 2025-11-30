@@ -26,12 +26,13 @@ export async function createLink(data) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
+    cache: "no-store",
   });
   return res.json();
 }
 
 export async function deleteLink(code) {
-  return fetch(`${BASE}/api/links/${code}`, { method: "DELETE" });
+  return fetch(`${BASE}/api/links/${code}`, { method: "DELETE" , cache: "no-store"});
 }
 
 export async function getLink(code) {
