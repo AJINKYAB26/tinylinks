@@ -31,15 +31,14 @@ export default function StatsPage({ params }) {
     fetchLink();
   }, [code]);
 
-  function ClientDate({ value }) {
+  const ClientDate = ({ value }) => {
     const [date, setDate] = useState("");
-
     useEffect(() => {
-      setDate(new Date(value).toLocaleString());
+      if (value) setDate(new Date(value).toLocaleString());
     }, [value]);
-
     return <>{date || "—"}</>;
-  }
+  };
+  
   const goToTarget = () => {
     // Go directly to Express, not Next.js
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE}/${code}`;
